@@ -73,3 +73,9 @@ CI is configured for Python 3.10–3.12; configuration alone is not a passing ru
 ## References
 
 Organization references the scope/workflow/examples approach of [llm-structured-output](https://github.com/sickn33/agentic-awesome-skills/blob/main/skills/llm-structured-output/SKILL.md) and validation/retry checkpoints of [ai-output-validation](https://github.com/DevelopersGlobal/ai-agent-skills/blob/main/skills/ai-output-validation/SKILL.md). Implementation and wording here are independent; provider capabilities from those projects are not included.
+
+## Verification checkpoint — development paused
+
+2026-11-10: three consecutive local rounds passed 21 unit test methods (including input matrices) and 9 CLI checks per round on Python 3.11.11 / Windows. Expanded coverage includes scalar JSON, invalid syntax, schema constraints, local/missing/external references, literal $ref data, array type differences, report overwrite protection, unreadable/missing files and output failures. Fixed nested array comparisons that previously missed true→1 or 1→1.0 changes, and handled parser recursion errors.
+
+This checkpoint pauses feature development. Tests do not exhaust all boundaries, certify hostile-input resource safety, or establish independent Agent repair performance. Remaining limits include float precision/underflow, Unicode surrogate handling, deep/recursive schemas and resource budgets. See [boundary results](evals/boundary-results.json).
