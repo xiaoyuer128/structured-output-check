@@ -92,3 +92,13 @@ python -m unittest discover -s tests -v
 当前为早期版本。尚未完成真实 Agent 修复评测，也没有成功率提升或效率收益数据。后续将补充固定评测集、修复轨迹和三组基线对照：直接模型、模型加脚本、模型加脚本和 Skill。
 
 本项目独立维护。api-regression、test-failure-triage、agent-tool-test 和 migration-review 将分别使用独立仓库。
+
+## 2026-11-10 更新
+
+- 拒绝指数溢出（如 `1e9999`），避免被解析为非有限浮点数。
+- 仅在 Schema 位置检查引用，保留 const/enum 等数据中的普通 `$ref` 字段。暂不支持 `$id`，以避免改变本地引用的解析基址。
+- 新增修复差异检查：`python scripts/compare.py --before original.json --after candidate-1.json`。退出码 0 为无变化、1 为需要审阅的变化、2 为无法比较。数组整体比较，不推断元素身份；报告可能包含输入值，请按原始数据的敏感程度保存。
+- 新增 GitHub Actions（Python 3.10–3.12）及回归测试；远端是否通过以 Actions 实际结果为准。
+- 新增 [Agent 评测场景](evals/README.md)。尚未运行模型对照实验，不宣称修复成功率提升。
+
+差异检查不会验证事实。原始 JSON 无法解析时，应保留原文并说明文本修改，不将无法比较视为没有变化。当前没有自动批量修复服务；外围代码围栏由 Agent 在新候选中按明确边界处理。
