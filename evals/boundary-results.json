@@ -1,0 +1,444 @@
+{
+  "date": "2026-11-10",
+  "python": "3.11.11 | packaged by Anaconda, Inc. | (main, Dec 11 2024, 16:34:19) [MSC v.1929 64 bit (AMD64)]",
+  "runs": [
+    {
+      "round": 1,
+      "unit_exit": 0,
+      "unit_output": "test_cli_errors_and_preservation (test_boundaries.BoundaryTests.test_cli_errors_and_preservation) ... ok\ntest_diff_matrix (test_boundaries.BoundaryTests.test_diff_matrix) ... ok\ntest_json_syntax_matrix (test_boundaries.BoundaryTests.test_json_syntax_matrix) ... ok\ntest_nested_array_types_are_changes (test_boundaries.BoundaryTests.test_nested_array_types_are_changes) ... ok\ntest_reference_matrix (test_boundaries.BoundaryTests.test_reference_matrix) ... ok\ntest_schema_matrix (test_boundaries.BoundaryTests.test_schema_matrix) ... ok\ntest_valid_scalar_matrix (test_boundaries.BoundaryTests.test_valid_scalar_matrix) ... ok\ntest_array_change (test_regressions.RegressionTests.test_array_change) ... ok\ntest_change_report (test_regressions.RegressionTests.test_change_report) ... ok\ntest_empty_local_reference (test_regressions.RegressionTests.test_empty_local_reference) ... ok\ntest_exponent_overflow (test_regressions.RegressionTests.test_exponent_overflow) ... ok\ntest_id_rejected (test_regressions.RegressionTests.test_id_rejected) ... ok\ntest_literal_ref_is_data (test_regressions.RegressionTests.test_literal_ref_is_data) ... ok\ntest_nested_external_reference (test_regressions.RegressionTests.test_nested_external_reference) ... ok\ntest_bad_schema (test_validate.ValidationTests.test_bad_schema) ... ok\ntest_constraint_errors_have_paths (test_validate.ValidationTests.test_constraint_errors_have_paths) ... ok\ntest_external_reference (test_validate.ValidationTests.test_external_reference) ... ok\ntest_invalid_json (test_validate.ValidationTests.test_invalid_json) ... ok\ntest_local_reference (test_validate.ValidationTests.test_local_reference) ... ok\ntest_required_and_extra_fields (test_validate.ValidationTests.test_required_and_extra_fields) ... ok\ntest_valid (test_validate.ValidationTests.test_valid) ... ok\n\n----------------------------------------------------------------------\nRan 21 tests in 1.900s\n\nOK\n",
+      "smoke": {
+        "python": "3.11.11",
+        "passed": 9,
+        "results": [
+          {
+            "case": "original",
+            "passed": true,
+            "exit_code": 1,
+            "report": {
+              "valid": false,
+              "stage": "validation",
+              "errors": [
+                {
+                  "instance_path": [
+                    "count"
+                  ],
+                  "schema_path": [
+                    "properties",
+                    "count",
+                    "type"
+                  ],
+                  "message": "'2' is not of type 'integer'"
+                }
+              ]
+            }
+          },
+          {
+            "case": "candidate",
+            "passed": true,
+            "exit_code": 0,
+            "report": {
+              "valid": true,
+              "stage": "validation",
+              "errors": []
+            }
+          },
+          {
+            "case": "missing",
+            "passed": true,
+            "exit_code": 1,
+            "report": {
+              "valid": false,
+              "stage": "validation",
+              "errors": [
+                {
+                  "instance_path": [],
+                  "schema_path": [
+                    "required"
+                  ],
+                  "message": "'count' is a required property"
+                }
+              ]
+            }
+          },
+          {
+            "case": "duplicate",
+            "passed": true,
+            "exit_code": 1,
+            "report": {
+              "valid": false,
+              "stage": "parse",
+              "errors": [
+                {
+                  "message": "Duplicate object key: count"
+                }
+              ]
+            }
+          },
+          {
+            "case": "truncated",
+            "passed": true,
+            "exit_code": 1,
+            "report": {
+              "valid": false,
+              "stage": "parse",
+              "errors": [
+                {
+                  "message": "Expecting value: line 1 column 10 (char 9)"
+                }
+              ]
+            }
+          },
+          {
+            "case": "fenced",
+            "passed": true,
+            "exit_code": 1,
+            "report": {
+              "valid": false,
+              "stage": "parse",
+              "errors": [
+                {
+                  "message": "Expecting value: line 1 column 1 (char 0)"
+                }
+              ]
+            }
+          },
+          {
+            "case": "type_change",
+            "passed": true,
+            "exit_code": 1,
+            "report": {
+              "report_version": "1.0",
+              "status": "review_required",
+              "changes": [
+                {
+                  "operation": "replace",
+                  "path": [
+                    "count"
+                  ],
+                  "before": "2",
+                  "after": 2
+                }
+              ],
+              "facts_verified": false
+            }
+          },
+          {
+            "case": "unchanged",
+            "passed": true,
+            "exit_code": 0,
+            "report": {
+              "report_version": "1.0",
+              "status": "unchanged",
+              "changes": [],
+              "facts_verified": false
+            }
+          },
+          {
+            "case": "unparseable_comparison",
+            "passed": true,
+            "exit_code": 2,
+            "report": {
+              "report_version": "1.0",
+              "status": "comparison_unavailable",
+              "message": "Expecting value: line 1 column 10 (char 9)",
+              "facts_verified": false
+            }
+          }
+        ],
+        "limitation": "Candidates supplied by author; no independent Agent trial or baseline."
+      }
+    },
+    {
+      "round": 2,
+      "unit_exit": 0,
+      "unit_output": "test_cli_errors_and_preservation (test_boundaries.BoundaryTests.test_cli_errors_and_preservation) ... ok\ntest_diff_matrix (test_boundaries.BoundaryTests.test_diff_matrix) ... ok\ntest_json_syntax_matrix (test_boundaries.BoundaryTests.test_json_syntax_matrix) ... ok\ntest_nested_array_types_are_changes (test_boundaries.BoundaryTests.test_nested_array_types_are_changes) ... ok\ntest_reference_matrix (test_boundaries.BoundaryTests.test_reference_matrix) ... ok\ntest_schema_matrix (test_boundaries.BoundaryTests.test_schema_matrix) ... ok\ntest_valid_scalar_matrix (test_boundaries.BoundaryTests.test_valid_scalar_matrix) ... ok\ntest_array_change (test_regressions.RegressionTests.test_array_change) ... ok\ntest_change_report (test_regressions.RegressionTests.test_change_report) ... ok\ntest_empty_local_reference (test_regressions.RegressionTests.test_empty_local_reference) ... ok\ntest_exponent_overflow (test_regressions.RegressionTests.test_exponent_overflow) ... ok\ntest_id_rejected (test_regressions.RegressionTests.test_id_rejected) ... ok\ntest_literal_ref_is_data (test_regressions.RegressionTests.test_literal_ref_is_data) ... ok\ntest_nested_external_reference (test_regressions.RegressionTests.test_nested_external_reference) ... ok\ntest_bad_schema (test_validate.ValidationTests.test_bad_schema) ... ok\ntest_constraint_errors_have_paths (test_validate.ValidationTests.test_constraint_errors_have_paths) ... ok\ntest_external_reference (test_validate.ValidationTests.test_external_reference) ... ok\ntest_invalid_json (test_validate.ValidationTests.test_invalid_json) ... ok\ntest_local_reference (test_validate.ValidationTests.test_local_reference) ... ok\ntest_required_and_extra_fields (test_validate.ValidationTests.test_required_and_extra_fields) ... ok\ntest_valid (test_validate.ValidationTests.test_valid) ... ok\n\n----------------------------------------------------------------------\nRan 21 tests in 1.830s\n\nOK\n",
+      "smoke": {
+        "python": "3.11.11",
+        "passed": 9,
+        "results": [
+          {
+            "case": "original",
+            "passed": true,
+            "exit_code": 1,
+            "report": {
+              "valid": false,
+              "stage": "validation",
+              "errors": [
+                {
+                  "instance_path": [
+                    "count"
+                  ],
+                  "schema_path": [
+                    "properties",
+                    "count",
+                    "type"
+                  ],
+                  "message": "'2' is not of type 'integer'"
+                }
+              ]
+            }
+          },
+          {
+            "case": "candidate",
+            "passed": true,
+            "exit_code": 0,
+            "report": {
+              "valid": true,
+              "stage": "validation",
+              "errors": []
+            }
+          },
+          {
+            "case": "missing",
+            "passed": true,
+            "exit_code": 1,
+            "report": {
+              "valid": false,
+              "stage": "validation",
+              "errors": [
+                {
+                  "instance_path": [],
+                  "schema_path": [
+                    "required"
+                  ],
+                  "message": "'count' is a required property"
+                }
+              ]
+            }
+          },
+          {
+            "case": "duplicate",
+            "passed": true,
+            "exit_code": 1,
+            "report": {
+              "valid": false,
+              "stage": "parse",
+              "errors": [
+                {
+                  "message": "Duplicate object key: count"
+                }
+              ]
+            }
+          },
+          {
+            "case": "truncated",
+            "passed": true,
+            "exit_code": 1,
+            "report": {
+              "valid": false,
+              "stage": "parse",
+              "errors": [
+                {
+                  "message": "Expecting value: line 1 column 10 (char 9)"
+                }
+              ]
+            }
+          },
+          {
+            "case": "fenced",
+            "passed": true,
+            "exit_code": 1,
+            "report": {
+              "valid": false,
+              "stage": "parse",
+              "errors": [
+                {
+                  "message": "Expecting value: line 1 column 1 (char 0)"
+                }
+              ]
+            }
+          },
+          {
+            "case": "type_change",
+            "passed": true,
+            "exit_code": 1,
+            "report": {
+              "report_version": "1.0",
+              "status": "review_required",
+              "changes": [
+                {
+                  "operation": "replace",
+                  "path": [
+                    "count"
+                  ],
+                  "before": "2",
+                  "after": 2
+                }
+              ],
+              "facts_verified": false
+            }
+          },
+          {
+            "case": "unchanged",
+            "passed": true,
+            "exit_code": 0,
+            "report": {
+              "report_version": "1.0",
+              "status": "unchanged",
+              "changes": [],
+              "facts_verified": false
+            }
+          },
+          {
+            "case": "unparseable_comparison",
+            "passed": true,
+            "exit_code": 2,
+            "report": {
+              "report_version": "1.0",
+              "status": "comparison_unavailable",
+              "message": "Expecting value: line 1 column 10 (char 9)",
+              "facts_verified": false
+            }
+          }
+        ],
+        "limitation": "Candidates supplied by author; no independent Agent trial or baseline."
+      }
+    },
+    {
+      "round": 3,
+      "unit_exit": 0,
+      "unit_output": "test_cli_errors_and_preservation (test_boundaries.BoundaryTests.test_cli_errors_and_preservation) ... ok\ntest_diff_matrix (test_boundaries.BoundaryTests.test_diff_matrix) ... ok\ntest_json_syntax_matrix (test_boundaries.BoundaryTests.test_json_syntax_matrix) ... ok\ntest_nested_array_types_are_changes (test_boundaries.BoundaryTests.test_nested_array_types_are_changes) ... ok\ntest_reference_matrix (test_boundaries.BoundaryTests.test_reference_matrix) ... ok\ntest_schema_matrix (test_boundaries.BoundaryTests.test_schema_matrix) ... ok\ntest_valid_scalar_matrix (test_boundaries.BoundaryTests.test_valid_scalar_matrix) ... ok\ntest_array_change (test_regressions.RegressionTests.test_array_change) ... ok\ntest_change_report (test_regressions.RegressionTests.test_change_report) ... ok\ntest_empty_local_reference (test_regressions.RegressionTests.test_empty_local_reference) ... ok\ntest_exponent_overflow (test_regressions.RegressionTests.test_exponent_overflow) ... ok\ntest_id_rejected (test_regressions.RegressionTests.test_id_rejected) ... ok\ntest_literal_ref_is_data (test_regressions.RegressionTests.test_literal_ref_is_data) ... ok\ntest_nested_external_reference (test_regressions.RegressionTests.test_nested_external_reference) ... ok\ntest_bad_schema (test_validate.ValidationTests.test_bad_schema) ... ok\ntest_constraint_errors_have_paths (test_validate.ValidationTests.test_constraint_errors_have_paths) ... ok\ntest_external_reference (test_validate.ValidationTests.test_external_reference) ... ok\ntest_invalid_json (test_validate.ValidationTests.test_invalid_json) ... ok\ntest_local_reference (test_validate.ValidationTests.test_local_reference) ... ok\ntest_required_and_extra_fields (test_validate.ValidationTests.test_required_and_extra_fields) ... ok\ntest_valid (test_validate.ValidationTests.test_valid) ... ok\n\n----------------------------------------------------------------------\nRan 21 tests in 1.854s\n\nOK\n",
+      "smoke": {
+        "python": "3.11.11",
+        "passed": 9,
+        "results": [
+          {
+            "case": "original",
+            "passed": true,
+            "exit_code": 1,
+            "report": {
+              "valid": false,
+              "stage": "validation",
+              "errors": [
+                {
+                  "instance_path": [
+                    "count"
+                  ],
+                  "schema_path": [
+                    "properties",
+                    "count",
+                    "type"
+                  ],
+                  "message": "'2' is not of type 'integer'"
+                }
+              ]
+            }
+          },
+          {
+            "case": "candidate",
+            "passed": true,
+            "exit_code": 0,
+            "report": {
+              "valid": true,
+              "stage": "validation",
+              "errors": []
+            }
+          },
+          {
+            "case": "missing",
+            "passed": true,
+            "exit_code": 1,
+            "report": {
+              "valid": false,
+              "stage": "validation",
+              "errors": [
+                {
+                  "instance_path": [],
+                  "schema_path": [
+                    "required"
+                  ],
+                  "message": "'count' is a required property"
+                }
+              ]
+            }
+          },
+          {
+            "case": "duplicate",
+            "passed": true,
+            "exit_code": 1,
+            "report": {
+              "valid": false,
+              "stage": "parse",
+              "errors": [
+                {
+                  "message": "Duplicate object key: count"
+                }
+              ]
+            }
+          },
+          {
+            "case": "truncated",
+            "passed": true,
+            "exit_code": 1,
+            "report": {
+              "valid": false,
+              "stage": "parse",
+              "errors": [
+                {
+                  "message": "Expecting value: line 1 column 10 (char 9)"
+                }
+              ]
+            }
+          },
+          {
+            "case": "fenced",
+            "passed": true,
+            "exit_code": 1,
+            "report": {
+              "valid": false,
+              "stage": "parse",
+              "errors": [
+                {
+                  "message": "Expecting value: line 1 column 1 (char 0)"
+                }
+              ]
+            }
+          },
+          {
+            "case": "type_change",
+            "passed": true,
+            "exit_code": 1,
+            "report": {
+              "report_version": "1.0",
+              "status": "review_required",
+              "changes": [
+                {
+                  "operation": "replace",
+                  "path": [
+                    "count"
+                  ],
+                  "before": "2",
+                  "after": 2
+                }
+              ],
+              "facts_verified": false
+            }
+          },
+          {
+            "case": "unchanged",
+            "passed": true,
+            "exit_code": 0,
+            "report": {
+              "report_version": "1.0",
+              "status": "unchanged",
+              "changes": [],
+              "facts_verified": false
+            }
+          },
+          {
+            "case": "unparseable_comparison",
+            "passed": true,
+            "exit_code": 2,
+            "report": {
+              "report_version": "1.0",
+              "status": "comparison_unavailable",
+              "message": "Expecting value: line 1 column 10 (char 9)",
+              "facts_verified": false
+            }
+          }
+        ],
+        "limitation": "Candidates supplied by author; no independent Agent trial or baseline."
+      }
+    }
+  ]
+}
