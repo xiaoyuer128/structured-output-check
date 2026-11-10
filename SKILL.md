@@ -25,6 +25,10 @@ Default to at most two repair attempts. Read the actual validation errors. Make 
 
 Write each candidate to candidate-1.json or candidate-2.json, with a separate validation report. Never overwrite the original. Run the same validator with the same schema after each attempt. Stop when valid or when the attempt limit is reached. Never execute code embedded in the output.
 
+Compare parseable originals and candidates with `python scripts/compare.py --before original.json --after candidate-1.json`. Exit 0 means unchanged, 1 means changes need review, and 2 means comparison unavailable. The report does not verify facts. For invalid originals preserve a textual explanation of edits; never treat unavailable comparison as unchanged. Do not silently truncate incomplete arrays or fill unknown fields with null unless supported by the contract and source evidence. Removing an unambiguous outer Markdown fence is permitted in a new candidate, followed by strict validation.
+
+Schemas containing $id are unsupported in this version to keep fragment references document-local. See evals/README.md when evaluating repair behavior; its scenarios are not measured results.
+
 ## Report
 
 Return status, candidate path if applicable, attempts used, changes made, and unresolved errors. State that schema validation checks structure and constraints, not factual correctness. If execution was unavailable, say unverified; do not claim validation passed. Keep raw data and reports local unless the user requests publication.
