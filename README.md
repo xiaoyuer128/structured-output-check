@@ -1,104 +1,75 @@
 # Structured Output Check
 
-校验 AI 生成的 JSON，并指导 Agent 在有限次数内修复结构错误的 Skill。
+[English](README.md) | [简体中文](README.zh-CN.md)
 
-适用于模型输出无法解析、字段缺失、类型不符、额外字段和 Schema 约束不满足的情况。校验通过仅表示结构符合约定，不代表业务事实正确。
+Validate AI-generated JSON and guide bounded repairs while preserving source facts.
 
-## 工作方式
+## What this skill does
 
-```text
-原始输出 + JSON Schema
-          ↓
-    确定性校验脚本
-          ↓
-   错误报告 → Agent 修复候选
-                   ↓
-              再次校验（默认最多两轮）
-```
+Local Python scripts strictly parse JSON, validate Draft 2020-12 schemas and report structural changes. The Agent follows [SKILL.md](SKILL.md) to interpret errors and create repair candidates. Scripts require no API key and do not call a model or automatically repair files.
 
-脚本不调用模型、不需要 API Key，也不自动覆盖原始输入。修复由支持 Skill 的 Agent 按 SKILL.md 执行；需要权威信息才能补充的业务字段，信息不足时停止并报告。
+## When to use
 
-## 快速开始
+- Malformed JSON or output that violates a known schema.
+- Missing fields, wrong types, enum or numeric constraint failures.
+- Reviewable changes between original and repaired outputs.
 
-需要 Python 3.10+，在仓库根目录执行：
+This skill does not verify facts, implement provider integrations or authorize downstream execution.
+
+## Install and examples
+
+Requires Python 3.10+. Run from the repository root:
 
 ```console
 python -m pip install -r requirements.txt
 python scripts/validate.py --input examples/valid.json --schema examples/schema.json --report report.json
+python scripts/validate.py --input examples/invalid.json --schema examples/schema.json
+python scripts/compare.py --before examples/invalid.json --after examples/valid.json
 ```
 
-有效示例输出：
+The valid example passes. The invalid example reports a type error at `["count"]`. The comparison flags changes; converting `"two"` to `2` still requires source evidence.
 
-```json
-{"valid": true, "stage": "validation", "errors": []}
-```
+Place the complete folder named structured-output-check in your Agent host's supported skills directory. Keep SKILL.md and scripts together and install dependencies in the Agent's Python environment. Discovery rules vary by host; use absolute script paths outside the repository root.
 
-运行失败示例：
+Example request:
 
-```console
-python scripts/validate.py --input examples/invalid.json --schema examples/schema.json --report invalid-report.json
-```
+> Use structured-output-check to validate original.json against schema.json. Repair only from supplied facts, with at most two attempts. Preserve the original, each candidate, validation reports and change explanations.
 
-示例中的 `count` 为字符串，而 Schema 要求整数；报告会给出 `instance_path: ["count"]` 以及对应 Schema 路径。
+## Core workflow
 
-| 退出码 | 含义 |
-|---|---|
-| 0 | 数据通过校验 |
-| 1 | JSON 解析失败或数据不符合 Schema |
-| 2 | 输入读取、依赖、Schema 或报告写入失败 |
+1. Establish the schema and authoritative source facts.
+2. Preserve and validate the original; resolve configuration errors before repair.
+3. Create a separate candidate using minimal justified changes. An unambiguous outer Markdown fence may be removed. Do not guess missing facts or silently truncate records.
+4. Revalidate against the unchanged schema, with at most two repair attempts by default.
+5. Compare parseable documents and review changes against evidence. For unparseable originals, explain textual edits separately; unavailable comparison is not unchanged data.
 
-命令行参数误用由 argparse 返回退出码 2。
+## CLI contracts
 
-## 在 Agent 中使用
+| Exit | Validator | Comparator |
+|---|---|---|
+| 0 | Schema-valid | Unchanged |
+| 1 | Parse/schema failure | Changes require review |
+| 2 | Input/configuration/report failure | Comparison unavailable |
 
-将完整仓库文件夹放入宿主支持的 Skill 目录，文件夹名保留为 `structured-output-check`，确保根目录存在 SKILL.md。安装 Python 依赖后，可提出：
+Argument misuse also exits 2. Validator JSON reports contain valid, stage and errors; schema errors include instance/schema paths. Comparator reports contain report_version, status and facts_verified=false, plus changes or an error message. Arrays are compared as whole values. Reports can contain input values; protect them like source data.
 
-> 使用 structured-output-check 检查 original.json 是否符合 schema.json；如果可以根据已有事实修复，最多尝试两轮，每轮保留候选文件和校验报告，不覆盖原始文件。
+## Edge cases and limits
 
-安装目录及自动发现方式以所用 Agent 的文档为准。直接运行 Python 命令只会校验，不会自动修复。SKILL.md 中的命令相对于本仓库目录执行；从其他目录使用时请切换工作目录或使用完整路径。
+- Rejects duplicate keys, NaN, Infinity and overflowing exponents. Float precision and underflow follow Python behavior; not an exact-decimal validator.
+- Supports self-contained Draft 2020-12 schemas and document-local references. External references and $id are unsupported; unknown keywords are not business validators.
+- Format checking depends on jsonschema FormatChecker and installed dependencies.
+- Never automatically inserts defaults or null for missing facts. Schema validity does not imply factual correctness.
+- No resource limits for hostile schemas or oversized files; use trusted, reasonably sized local inputs.
+- No built-in provider adapter or automatic batch repair service.
 
-## 校验规则与边界
-
-- 支持 JSON Schema Draft 2020-12、自包含 Schema 和本地片段引用。
-- 拒绝重复对象键、NaN、Infinity 和外部 Schema 引用。
-- 使用 jsonschema FormatChecker；具体格式的支持取决于已安装依赖。
-- 不提供事实核验、自定义业务规则执行、模型调用和远程引用解析。
-- 不将 Schema 的默认值自动写入数据，不保证修复一定成功。
-- 适用于可信大小的本地输入，尚未针对超大文件和恶意复杂 Schema 做资源限制。
-
-## 目录
-
-```text
-structured-output-check/
-├── SKILL.md
-├── README.md
-├── requirements.txt
-├── scripts/validate.py
-├── examples/
-│   ├── schema.json
-│   ├── valid.json
-│   └── invalid.json
-└── tests/test_validate.py
-```
-
-## 验证与开发状态
+## Testing and status
 
 ```console
 python -m unittest discover -s tests -v
 ```
 
-2026-11-09：Python 3.11 环境下 7 项单元测试通过，覆盖合法数据、错误路径、严格 JSON 解析、字段约束、非法 Schema、外部引用拒绝和本地引用。此结果验证校验脚本，不证明 Agent 修复效果。
+CI is configured for Python 3.10–3.12; configuration alone is not a passing run. See [executed test results](evals/TEST_RESULTS.md) and [Agent evaluation scenarios](evals/README.md). No measured model improvement is claimed.
 
-当前为早期版本。尚未完成真实 Agent 修复评测，也没有成功率提升或效率收益数据。后续将补充固定评测集、修复轨迹和三组基线对照：直接模型、模型加脚本、模型加脚本和 Skill。
+## References
 
-本项目独立维护。api-regression、test-failure-triage、agent-tool-test 和 migration-review 将分别使用独立仓库。
-
-## 2026-11-10 更新
-
-- 拒绝指数溢出（如 `1e9999`），避免被解析为非有限浮点数。
-- 仅在 Schema 位置检查引用，保留 const/enum 等数据中的普通 `$ref` 字段。暂不支持 `$id`，以避免改变本地引用的解析基址。
-- 新增修复差异检查：`python scripts/compare.py --before original.json --after candidate-1.json`。退出码 0 为无变化、1 为需要审阅的变化、2 为无法比较。数组整体比较，不推断元素身份；报告可能包含输入值，请按原始数据的敏感程度保存。
-- 新增 GitHub Actions（Python 3.10–3.12）及回归测试；远端是否通过以 Actions 实际结果为准。
-- 新增 [Agent 评测场景](evals/README.md)。尚未运行模型对照实验，不宣称修复成功率提升。
-
-差异检查不会验证事实。原始 JSON 无法解析时，应保留原文并说明文本修改，不将无法比较视为没有变化。当前没有自动批量修复服务；外围代码围栏由 Agent 在新候选中按明确边界处理。
+Organization references the scope/workflow/examples approach of [llm-structured-output](https://github.com/sickn33/agentic-awesome-skills/blob/main/skills/llm-structured-output/SKILL.md) and validation/retry checkpoints of [ai-output-validation](https://github.com/DevelopersGlobal/ai-agent-skills/blob/main/skills/ai-output-validation/SKILL.md). Implementation and wording here are independent; provider capabilities from those projects are not included.
