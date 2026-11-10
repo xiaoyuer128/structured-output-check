@@ -73,3 +73,9 @@ CI 配置覆盖 Python 3.10–3.12，配置存在不等于通过。已执行检�
 ## 参考
 
 结构参考 [llm-structured-output](https://github.com/sickn33/agentic-awesome-skills/blob/main/skills/llm-structured-output/SKILL.md) 的范围、流程和示例，以及 [ai-output-validation](https://github.com/DevelopersGlobal/ai-agent-skills/blob/main/skills/ai-output-validation/SKILL.md) 的校验、重试与检查点。本文措辞和项目实现独立，不包含上述项目的模型供应商接入能力。
+
+## 验证节点：暂停功能开发
+
+2026-11-10：Windows / Python 3.11.11 下连续三轮通过，每轮包含 21 项单元测试方法（内含输入矩阵）和 9 项命令行检查。覆盖 JSON 标量、非法语法、Schema 约束、本地/缺失/外部引用、数据中的 $ref、数组类型差异、禁止覆盖输入、非法编码、文件缺失及报告写入失败。修复嵌套数组中 true→1、1→1.0 变化漏报，并处理解析递归错误。
+
+本节点暂停功能开发。测试不代表边界已穷尽，也不证明恶意输入资源安全或独立 Agent 修复效果。浮点精度/下溢、Unicode 孤立代理字符、深层/递归 Schema 和资源预算仍属于限制。详见[多轮结果](evals/boundary-results.json)。
