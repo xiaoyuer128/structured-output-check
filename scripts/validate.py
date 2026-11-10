@@ -63,7 +63,7 @@ def validate_files(input_path, schema_path):
         return 2, {"valid": False, "stage": "configuration", "errors": [{"message": str(exc)}]}
     try:
         data = load(input_path)
-    except (ValueError, UnicodeError) as exc:
+    except (ValueError, UnicodeError, RecursionError) as exc:
         return 1, {"valid": False, "stage": "parse", "errors": [{"message": str(exc)}]}
     except OSError as exc:
         return 2, {"valid": False, "stage": "input", "errors": [{"message": str(exc)}]}
