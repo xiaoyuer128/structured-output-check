@@ -21,3 +21,7 @@ The smoke checks execute actual subprocesses and inspect both exit codes and JSO
 Candidates were supplied by the test author. This is not an independent Agent repair trial, a model comparison or a measured improvement claim. Missing-fact stopping behavior, retry discipline and factual preservation still need actual Agent trajectory evaluation. Other Python versions and remote CI status are not certified by this local run.
 
 候选由测试作者提供，尚未开展独立 Agent 修复实验或模型对照。不把上述通过率当作模型修复率；事实缺失时停止、重试次数控制及事实保真仍待实际轨迹验证。本地运行也不证明其他 Python 版本或远端 CI 通过。
+
+## Extended checkpoint / 扩展验证
+
+Three consecutive rounds: 21 unit methods + 9 CLI checks per round, all passed. Repeated identical runs check stability, not additional coverage or independent samples. Full logs: [boundary-results.json](boundary-results.json). Development paused after this checkpoint; no independent Agent trial performed.
