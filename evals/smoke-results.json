@@ -1,0 +1,141 @@
+{
+  "python": "3.11.11",
+  "passed": 9,
+  "results": [
+    {
+      "case": "original",
+      "passed": true,
+      "exit_code": 1,
+      "report": {
+        "valid": false,
+        "stage": "validation",
+        "errors": [
+          {
+            "instance_path": [
+              "count"
+            ],
+            "schema_path": [
+              "properties",
+              "count",
+              "type"
+            ],
+            "message": "'2' is not of type 'integer'"
+          }
+        ]
+      }
+    },
+    {
+      "case": "candidate",
+      "passed": true,
+      "exit_code": 0,
+      "report": {
+        "valid": true,
+        "stage": "validation",
+        "errors": []
+      }
+    },
+    {
+      "case": "missing",
+      "passed": true,
+      "exit_code": 1,
+      "report": {
+        "valid": false,
+        "stage": "validation",
+        "errors": [
+          {
+            "instance_path": [],
+            "schema_path": [
+              "required"
+            ],
+            "message": "'count' is a required property"
+          }
+        ]
+      }
+    },
+    {
+      "case": "duplicate",
+      "passed": true,
+      "exit_code": 1,
+      "report": {
+        "valid": false,
+        "stage": "parse",
+        "errors": [
+          {
+            "message": "Duplicate object key: count"
+          }
+        ]
+      }
+    },
+    {
+      "case": "truncated",
+      "passed": true,
+      "exit_code": 1,
+      "report": {
+        "valid": false,
+        "stage": "parse",
+        "errors": [
+          {
+            "message": "Expecting value: line 1 column 10 (char 9)"
+          }
+        ]
+      }
+    },
+    {
+      "case": "fenced",
+      "passed": true,
+      "exit_code": 1,
+      "report": {
+        "valid": false,
+        "stage": "parse",
+        "errors": [
+          {
+            "message": "Expecting value: line 1 column 1 (char 0)"
+          }
+        ]
+      }
+    },
+    {
+      "case": "type_change",
+      "passed": true,
+      "exit_code": 1,
+      "report": {
+        "report_version": "1.0",
+        "status": "review_required",
+        "changes": [
+          {
+            "operation": "replace",
+            "path": [
+              "count"
+            ],
+            "before": "2",
+            "after": 2
+          }
+        ],
+        "facts_verified": false
+      }
+    },
+    {
+      "case": "unchanged",
+      "passed": true,
+      "exit_code": 0,
+      "report": {
+        "report_version": "1.0",
+        "status": "unchanged",
+        "changes": [],
+        "facts_verified": false
+      }
+    },
+    {
+      "case": "unparseable_comparison",
+      "passed": true,
+      "exit_code": 2,
+      "report": {
+        "report_version": "1.0",
+        "status": "comparison_unavailable",
+        "message": "Expecting value: line 1 column 10 (char 9)",
+        "facts_verified": false
+      }
+    }
+  ],
+  "limitation": "Candidates supplied by author; no independent Agent trial or baseline."
+}
