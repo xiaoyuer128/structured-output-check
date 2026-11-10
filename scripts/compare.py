@@ -19,7 +19,7 @@ def changes(before, after, path=None):
                 result.extend(changes(before[key], after[key], path + [key]))
     elif isinstance(before, list):
         # Compare the whole array: positional matching cannot prove item identity.
-        if before != after:
+        if len(before) != len(after) or any(changes(a, b) for a, b in zip(before, after)):
             result.append({"operation": "replace", "path": path, "before": before, "after": after})
     elif before != after:
         result.append({"operation": "replace", "path": path, "before": before, "after": after})
