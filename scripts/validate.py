@@ -1,6 +1,7 @@
 """Strict JSON and self-contained Draft 2020-12 schema validation."""
 import argparse
 import json
+import math
 import sys
 from pathlib import Path
 
@@ -20,18 +21,33 @@ def reject_constant(value):
 
 def load(path):
     return json.loads(Path(path).read_text(encoding="utf-8"),
-                      object_pairs_hook=pairs, parse_constant=reject_constant)
+                      object_pairs_hook=pairs, parse_constant=reject_constant,
+                      parse_float=finite_float)
+
+
+def finite_float(value):
+    number = float(value)
+    if not math.isfinite(number):
+        raise ValueError(f"Number exceeds supported finite range: {value}")
+    return number
 
 
 def check_refs(value):
     if isinstance(value, dict):
-        for key, item in value.items():
-            if key in ("$ref", "$dynamicRef") and isinstance(item, str) and not item.startswith("#"):
+        if "$id" in value:
+            raise ValueError("Schema $id is unsupported; use document-local fragments")
+        for key in ("$ref", "$dynamicRef"):
+            item = value.get(key)
+            if isinstance(item, str) and item and not item.startswith("#"):
                 raise ValueError("External schema references are unsupported")
-            check_refs(item)
-    elif isinstance(value, list):
-        for item in value:
-            check_refs(item)
+        for key in ("$defs", "properties", "patternProperties", "dependentSchemas"):
+            for item in value.get(key, {}).values():
+                check_refs(item)
+        for key in ("allOf", "anyOf", "oneOf", "prefixItems"):
+            for item in value.get(key, []):
+                check_refs(item)
+        for key in ("items", "contains", "additionalProperties", "propertyNames", "not", "if", "then", "else", "unevaluatedProperties", "unevaluatedItems", "contentSchema"):
+            check_refs(value.get(key))
 
 
 def validate_files(input_path, schema_path):
