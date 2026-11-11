@@ -1,0 +1,81 @@
+{
+  "date": "2026-11-11",
+  "version": "0.1.0",
+  "layout": ".agents/skills/structured-output-check",
+  "different_cwd": true,
+  "exit_code": 0,
+  "demo": {
+    "results": [
+      {
+        "command": [
+          "scripts/validate.py",
+          "--input",
+          "examples/invalid.json",
+          "--schema",
+          "examples/schema.json"
+        ],
+        "exit_code": 1,
+        "output": {
+          "valid": false,
+          "stage": "validation",
+          "errors": [
+            {
+              "instance_path": [
+                "count"
+              ],
+              "schema_path": [
+                "properties",
+                "count",
+                "type"
+              ],
+              "message": "'two' is not of type 'integer'"
+            }
+          ]
+        }
+      },
+      {
+        "command": [
+          "scripts/validate.py",
+          "--input",
+          "examples/valid.json",
+          "--schema",
+          "examples/schema.json"
+        ],
+        "exit_code": 0,
+        "output": {
+          "valid": true,
+          "stage": "validation",
+          "errors": []
+        }
+      },
+      {
+        "command": [
+          "scripts/compare.py",
+          "--before",
+          "examples/invalid.json",
+          "--after",
+          "examples/valid.json"
+        ],
+        "exit_code": 1,
+        "output": {
+          "report_version": "1.0",
+          "status": "review_required",
+          "changes": [
+            {
+              "operation": "replace",
+              "path": [
+                "count"
+              ],
+              "before": "two",
+              "after": 2
+            }
+          ],
+          "facts_verified": false
+        }
+      }
+    ],
+    "limitation": "Script demonstration, not independent Agent evaluation."
+  },
+  "platform_cli_verified": false,
+  "agent_activation_verified": false
+}
