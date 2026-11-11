@@ -79,3 +79,7 @@ Organization references the scope/workflow/examples approach of [llm-structured-
 2026-11-10: three consecutive local rounds passed 21 unit test methods (including input matrices) and 9 CLI checks per round on Python 3.11.11 / Windows. Expanded coverage includes scalar JSON, invalid syntax, schema constraints, local/missing/external references, literal $ref data, array type differences, report overwrite protection, unreadable/missing files and output failures. Fixed nested array comparisons that previously missed true→1 or 1→1.0 changes, and handled parser recursion errors.
 
 This checkpoint pauses feature development. Tests do not exhaust all boundaries, certify hostile-input resource safety, or establish independent Agent repair performance. Remaining limits include float precision/underflow, Unicode surrogate handling, deep/recursive schemas and resource budgets. See [boundary results](evals/boundary-results.json).
+
+## Release v0.1.0 / 发布版本
+
+MIT licensed. [Installation and complete demo / 安装与完整演示](docs/INSTALLATION.md). Run `python scripts/demo.py`. Platform indexing and Agent auto-activation are not certified by local checks.
