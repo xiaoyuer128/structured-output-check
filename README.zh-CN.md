@@ -79,3 +79,7 @@ CI 配置覆盖 Python 3.10–3.12，配置存在不等于通过。已执行检�
 2026-11-10：Windows / Python 3.11.11 下连续三轮通过，每轮包含 21 项单元测试方法（内含输入矩阵）和 9 项命令行检查。覆盖 JSON 标量、非法语法、Schema 约束、本地/缺失/外部引用、数据中的 $ref、数组类型差异、禁止覆盖输入、非法编码、文件缺失及报告写入失败。修复嵌套数组中 true→1、1→1.0 变化漏报，并处理解析递归错误。
 
 本节点暂停功能开发。测试不代表边界已穷尽，也不证明恶意输入资源安全或独立 Agent 修复效果。浮点精度/下溢、Unicode 孤立代理字符、深层/递归 Schema 和资源预算仍属于限制。详见[多轮结果](evals/boundary-results.json)。
+
+## Release v0.1.0 / 发布版本
+
+MIT licensed. [Installation and complete demo / 安装与完整演示](docs/INSTALLATION.md). Run `python scripts/demo.py`. Platform indexing and Agent auto-activation are not certified by local checks.
